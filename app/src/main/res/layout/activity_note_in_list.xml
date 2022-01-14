@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_for_note"
+    android:foreground="?selectableItemBackground"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/title_note_in_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_title"
+        android:textSize="@dimen/text_size_title_in_list"
+        android:textColor="@color/black"/>
+    <View
+        android:layout_width="wrap_content"
+        android:background="@drawable/separator"
+        android:layout_height="3dp" />
+        <TextView
+        android:id="@+id/description_note_in_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_note"
+        android:lines="5"
+        android:textSize="@dimen/text_size_note_in_list"
+        android:textColor="@color/black"/>
+    <View
+        android:layout_width="wrap_content"
+        android:background="@drawable/separator"
+        android:layout_height="3dp" />
+</LinearLayout>
