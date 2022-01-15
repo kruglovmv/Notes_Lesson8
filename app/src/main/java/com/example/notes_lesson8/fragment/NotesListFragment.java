@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,15 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
     Repo noteslist;
     RecyclerView list;
     NotesAdapter adapter;
+
+    @Override
+    public void onNoteClick(int idItemPopUpMenu, Note note, int positionNoteInList) {
+        switch (idItemPopUpMenu){
+            case R.id.popup_menu_for_note_in_list_delete:{
+                adapter.delete(noteslist.getAll(), positionNoteInList);
+            }
+        }
+    }
 
     interface Controller {
         void listPress(Note note);
@@ -70,13 +81,14 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
         adapter.setOnNoteClickListener(this);
         list = view.findViewById(R.id.fragment_notes_list_recycler);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
+        list.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
         list.setAdapter(adapter);
 
     }
 
-    @Override
-    public void onNoteClick(Note note) {
-        controller.listPress(note);
-    }
+//    @Override
+//    public void onNoteClick(Note note) {
+//        controller.listPress(note);
+//    }
 }
 

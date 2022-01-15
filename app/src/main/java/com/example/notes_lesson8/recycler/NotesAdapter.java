@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes_lesson8.R;
 import com.example.notes_lesson8.data.Note;
+import com.example.notes_lesson8.data.Repo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,14 @@ import java.util.zip.Inflater;
 public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
     private List<Note> notesList = new ArrayList<>();
 
+    public void delete(List<Note> notes, int positionNoteInList) {
+        this.notesList = notes;
+        notifyItemRemoved(positionNoteInList);
+
+    }
+
     public interface OnNoteClickListener {
-        void onNoteClick(Note note);
+        void onNoteClick(int idItemPopUpMenu, Note note, int positionNoteInList);
     }
 
     private OnNoteClickListener listener;

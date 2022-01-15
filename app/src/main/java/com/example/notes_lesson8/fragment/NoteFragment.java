@@ -40,6 +40,7 @@ public class NoteFragment extends Fragment {
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
+    ArrayAdapter adapterForSpinner;
 
     private Integer id;
 
@@ -72,7 +73,7 @@ public class NoteFragment extends Fragment {
     private void initSpinner(View parentView, int importance) {
         int index = (importance) % parentView.getResources().getStringArray(R.array.importance).length;
         spinner = parentView.findViewById(R.id.spinner);
-        ArrayAdapter adapterForSpinner = ArrayAdapter.createFromResource(getContext(), R.array.importance,
+        this.adapterForSpinner = ArrayAdapter.createFromResource(getContext(), R.array.importance,
                 android.R.layout.simple_spinner_item);
         adapterForSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterForSpinner);
@@ -142,7 +143,7 @@ public class NoteFragment extends Fragment {
     }
 
     private String yearToString(int year) {
-        return Integer.toString(year) + "year";
+        return Integer.toString(year) + " year";
     }
 
     private String dayToString(int day) {
@@ -178,8 +179,9 @@ public class NoteFragment extends Fragment {
                 return "November";
             case 12:
                 return "December";
+            default:
+                return "";
         }
-        return "";
     }
 
     private void initButton(View parentView) {
@@ -197,14 +199,7 @@ public class NoteFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                titleNote = parentView.findViewById(R.id.title_note);
-                noteDescription = parentView.findViewById(R.id.note);
-                noteData = parentView.findViewById(R.id.date_note);
-
-                Spinner spinner = parentView.findViewById(R.id.spinner);
-                ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter();
-                int position = adapter.getPosition(spinner.getSelectedItem());
-
+                int position = adapterForSpinner.getPosition(spinner.getSelectedItem());
                 Note editNote = new Note(titleNote.getText().toString(), noteDescription.getText().toString(), id, position, noteData.getText().toString());
                 Intent backIntent = new Intent(getContext(), MainActivity.class);
                 backIntent.putExtra(NOTE_FOR_EDIT, editNote);

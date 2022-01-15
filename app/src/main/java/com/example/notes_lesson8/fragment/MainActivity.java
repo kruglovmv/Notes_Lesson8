@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.options_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -96,5 +96,6 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
 
