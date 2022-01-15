@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_title">20sp</dimen>
+    <dimen name="margin_title">10dp</dimen>
+    <dimen name="text_size_note">30sp</dimen>
+    <dimen name="margin_note">10dp</dimen>
+    <dimen name="corner_radius_button_note">150dp</dimen>
+    <dimen name="button_margin">10dp</dimen>
+    <dimen name="text_size_title_in_list">20sp</dimen>
+    <dimen name="text_size_note_in_list">30sp</dimen>
+</resources>

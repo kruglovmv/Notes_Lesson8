@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group android:id="@+id/popup_menu_for_note_in_list" >
+        <item
+            android:id="@+id/popup_menu_for_note_in_list_delete"
+            android:icon="@drawable/ic_baseline_delete_24"
+            android:title="@string/text_popup_menu_for_note_in_list_delete" />
+        <item
+            android:id="@+id/popup_menu_for_note_in_list_edit"
+            android:icon="@drawable/ic_baseline_edit_24"
+            android:title="@string/text_popup_menu_for_note_in_list_edit"/>
+        <item
+            android:id="@+id/menu3"
+            android:title="Popup menu item 3">
+            <menu>
+                <item
+                    android:id="@+id/submenu"
+                    android:title="Подменю"/>
+            </menu>
+        </item>
+    </group>
+</menu>

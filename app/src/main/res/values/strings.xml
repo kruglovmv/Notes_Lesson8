@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">Notes_Lesson8</string>
+    <string name="app_name">Notes</string>
+    <string name="text_button_save">Save</string>
+    <string name="text_button_back">Back</string>
+    <string name="ass_menu_text">New note</string>
+    <string name="text_button_delete">Delete</string>
+    <string name="text_button_exit">Exit</string>
+    <string name="text_button_date">Set data</string>
+    <string name="hint_title_note">Title</string>
+    <string name="hint_date_note">Data</string>
+    <string name="hint_note">NOTE</string>
+    <string name="text_popup_menu_for_note_in_list_delete">Delete</string>
+    <string name="text_popup_menu_for_note_in_list_edit">Edit</string>
+    <string-array name="importance">
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+    </string-array>
 </resources>
