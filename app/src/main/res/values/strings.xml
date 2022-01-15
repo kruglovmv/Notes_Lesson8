@@ -5,4 +5,13 @@
     <string name="ass_menu_text">New note</string>
     <string name="text_button_delete">Delete</string>
     <string name="text_button_exit">Exit</string>
+    <string name="text_button_date">Set data</string>
+    <string name="hint_title_note">Title</string>
+    <string name="hint_date_note">Data</string>
+    <string name="hint_note">NOTE</string>
+    <string-array name="importance">
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+    </string-array>
 </resources>

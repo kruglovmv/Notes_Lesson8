@@ -1,10 +1,12 @@
 package com.example.notes_lesson8.fragment;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -13,16 +15,26 @@ import androidx.fragment.app.Fragment;
 
 import com.example.notes_lesson8.R;
 import com.example.notes_lesson8.data.Note;
+import com.example.notes_lesson8.fragment.MainActivity;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Calendar;
+
+import static com.example.notes_lesson8.data.Constants.NOTE_FOR_EDIT;
 import static com.example.notes_lesson8.data.Constants.NOTE_FOR_EDIT;
 
 public class NoteFragment extends Fragment {
     Note note = new Note();
     EditText titleNote;
     EditText noteDescription;
+    EditText noteData;
+    MaterialButton dataButton;
     MaterialButton saveButton;
     MaterialButton backButton;
+    private int lastSelectedYear;
+    private int lastSelectedMonth;
+    private int lastSelectedDayOfMonth;
+
     private Integer id;
 
     public static NoteFragment getInstance(Note note) {
@@ -41,6 +53,10 @@ public class NoteFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        final Calendar c = Calendar.getInstance();
+        this.lastSelectedYear = c.get(Calendar.YEAR);
+        this.lastSelectedMonth = c.get(Calendar.MONTH);
+        this.lastSelectedDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
 
         initNote(view);
         initButton(view);
@@ -68,6 +84,14 @@ public class NoteFragment extends Fragment {
     private void initButton(View parentView) {
         saveButton = parentView.findViewById(R.id.button_save);
         backButton = parentView.findViewById(R.id.button_back);
+        dataButton = parentView.findViewById(R.id.button_date);
+        dataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonSelectDate();
+            }
+        });
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +99,7 @@ public class NoteFragment extends Fragment {
                 startActivity(backIntent);
             }
         });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,5 +111,30 @@ public class NoteFragment extends Fragment {
                 startActivity(backIntent);
             }
         });
+
+    }
+    private void buttonSelectDate() {
+
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year,
+                                  int monthOfYear, int dayOfMonth) {
+
+                noteData.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                lastSelectedYear = year;
+                lastSelectedMonth = monthOfYear;
+                lastSelectedDayOfMonth = dayOfMonth;
+            }
+        };
+
+        DatePickerDialog datePickerDialog = null;
+
+        datePickerDialog = new DatePickerDialog(getContext(),
+                dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
+
+        datePickerDialog.show();
     }
 }
+
