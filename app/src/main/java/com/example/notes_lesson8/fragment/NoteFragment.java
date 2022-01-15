@@ -70,14 +70,14 @@ public class NoteFragment extends Fragment {
     }
 
     private void initSpinner(View parentView, int importance) {
-        int index = (importance)%parentView.getResources().getStringArray(R.array.importance).length;
+        int index = (importance) % parentView.getResources().getStringArray(R.array.importance).length;
         spinner = parentView.findViewById(R.id.spinner);
         ArrayAdapter adapterForSpinner = ArrayAdapter.createFromResource(getContext(), R.array.importance,
                 android.R.layout.simple_spinner_item);
         adapterForSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterForSpinner);
         if (index >= 0) {
-                spinner.setSelection(index);
+            spinner.setSelection(index);
         }
     }
 
@@ -115,58 +115,73 @@ public class NoteFragment extends Fragment {
 
     private String normalisationToData(String data) {
 
-        if((data == null )||(data == "")){
+        if ((data == null) || (data == "")) {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH)+1;
+            int month = c.get(Calendar.MONTH) + 1;
             int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
             return dayToString(dayOfMonth) + " " + monthToString(month) + " " + yearToString(year);
-             }else {
+        } else {
             return data;
         }
 
     }
+
     private String normalisationToData(int[] data) {
 
-        if((data == null )||(data[0] == 0)){
+        if ((data == null) || (data[0] == 0)) {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH)+1;
+            int month = c.get(Calendar.MONTH) + 1;
             int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
             return dayToString(dayOfMonth) + " " + monthToString(month) + " " + yearToString(year);
-        }else {
-            return dayToString(data[0]) + " " + monthToString(data[1]+1) + " " + yearToString(data[2]);
+        } else {
+            return dayToString(data[0]) + " " + monthToString(data[1] + 1) + " " + yearToString(data[2]);
         }
 
     }
+
     private String yearToString(int year) {
         return Integer.toString(year) + "year";
     }
 
-    private String dayToString(int day){
-        if(day<10) {
-            return "0"+Integer.toString(day);
+    private String dayToString(int day) {
+        if (day < 10) {
+            return "0" + Integer.toString(day);
         }
         return Integer.toString(day);
     }
 
-    private String monthToString(int month){
-        switch (month){
-            case 1: return "January";
-            case 2: return "February";
-            case 3: return "March";
-            case 4: return "April";
-            case 5: return "May";
-            case 6: return "June";
-            case 7: return "July";
-            case 8: return "August";
-            case 9: return "September";
-            case 10: return "October";
-            case 11: return "November";
-            case 12: return "December";
+    private String monthToString(int month) {
+        switch (month) {
+            case 1:
+                return "January";
+            case 2:
+                return "February";
+            case 3:
+                return "March";
+            case 4:
+                return "April";
+            case 5:
+                return "May";
+            case 6:
+                return "June";
+            case 7:
+                return "July";
+            case 8:
+                return "August";
+            case 9:
+                return "September";
+            case 10:
+                return "October";
+            case 11:
+                return "November";
+            case 12:
+                return "December";
         }
         return "";
     }
+
     private void initButton(View parentView) {
         saveButton = parentView.findViewById(R.id.button_save);
         backButton = parentView.findViewById(R.id.button_back);
@@ -200,13 +215,11 @@ public class NoteFragment extends Fragment {
     }
 
     private void buttonSelectDate() {
-
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year,
                                   int monthOfYear, int dayOfMonth) {
-             int[] array = {dayOfMonth, monthOfYear, year};
+                int[] array = {dayOfMonth, monthOfYear, year};
                 noteData.setText(normalisationToData(array));
 
                 lastSelectedYear = year;
@@ -214,12 +227,9 @@ public class NoteFragment extends Fragment {
                 lastSelectedDayOfMonth = dayOfMonth;
             }
         };
-
         DatePickerDialog datePickerDialog = null;
-
         datePickerDialog = new DatePickerDialog(getContext(),
                 dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
-
         datePickerDialog.show();
     }
 }
