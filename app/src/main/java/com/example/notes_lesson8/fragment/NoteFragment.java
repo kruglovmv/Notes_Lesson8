@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.notes_lesson8.R;
@@ -28,7 +29,7 @@ public class NoteFragment extends Fragment {
     EditText titleNote;
     EditText noteDescription;
     EditText noteData;
-    MaterialButton dataButton;
+    AppCompatImageView dataButton;
     MaterialButton saveButton;
     MaterialButton backButton;
     private int lastSelectedYear;

@@ -18,25 +18,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/date_note"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_title"
             android:hint="@string/hint_date_note"
             android:ems="10"
             android:inputType="date" />
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/button_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/button_margin"
-            android:backgroundTint="@color/background_button"
+            android:src="@drawable/ic_baseline_calendar_month_24"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:text="@string/text_button_date"
             app:cornerRadius="@dimen/corner_radius_button_note" />
 
@@ -63,22 +64,13 @@
                 android:id="@+id/note"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:lines="5"
+
                 android:layout_margin="@dimen/margin_note"
                 android:textColor="@color/text_color_note"
-                android:hint="@string/hint_note"
                 android:textSize="@dimen/text_size_note" />
         </LinearLayout>
 
-
     </ScrollView>
-
-    <View
-        android:id="@+id/divider3"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="?android:attr/listDivider" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -95,4 +87,6 @@
             android:text="@string/text_button_back" />
 
     </LinearLayout>
+
+
 </LinearLayout>
