@@ -10,14 +10,5 @@
             android:id="@+id/popup_menu_for_note_in_list_edit"
             android:icon="@drawable/ic_baseline_edit_24"
             android:title="@string/text_popup_menu_for_note_in_list_edit"/>
-        <item
-            android:id="@+id/menu3"
-            android:title="Popup menu item 3">
-            <menu>
-                <item
-                    android:id="@+id/submenu"
-                    android:title="Подменю"/>
-            </menu>
-        </item>
-    </group>
+        </group>
 </menu>
