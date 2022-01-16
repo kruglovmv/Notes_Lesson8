@@ -21,9 +21,9 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     AppCompatImageView  buttonForPopUpMenu;
     androidx.appcompat.widget.PopupMenu popUpMenu;
     Note note;
-    private NotesAdapter.OnNoteClickListener listener;
+    private NotesAdapter.OnPopUpMenuClickListener listener;
 
-    public NoteHolder(@NonNull View itemView, NotesAdapter.OnNoteClickListener listener) {
+    public NoteHolder(@NonNull View itemView, NotesAdapter.OnPopUpMenuClickListener listener) {
         super(itemView);
         this.listener = listener;
         buttonForPopUpMenu = itemView.findViewById(R.id.activity_note_in_list_button_for_popup_menu);
@@ -61,14 +61,17 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     public boolean onMenuItemClick(MenuItem item) {
         switch(item.getItemId()){
             case R.id.popup_menu_for_note_in_list_delete:{
-                listener.onNoteClick(R.id.popup_menu_for_note_in_list_delete, note, getAdapterPosition());
+                listener.onPopUpMenuClick(R.id.popup_menu_for_note_in_list_delete, note, getAdapterPosition());
                 return true;
             }
             case R.id.popup_menu_for_note_in_list_edit:{
-                listener.onNoteClick(R.id.popup_menu_for_note_in_list_edit, note, getAdapterPosition());
+                listener.onPopUpMenuClick(R.id.popup_menu_for_note_in_list_edit, note, getAdapterPosition());
                 return true;
             }
             default: return false;
         }
+    }
+    public Note getNote(){
+        return note;
     }
 }

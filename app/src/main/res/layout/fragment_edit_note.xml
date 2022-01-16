@@ -21,15 +21,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <TextView
             android:id="@+id/date_note"
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_title"
+            android:textSize="@dimen/text_size_title"
             android:hint="@string/hint_date_note"
-            android:ems="10"
-            android:inputType="date" />
+            android:ems="10" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/button_date"

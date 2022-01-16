@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +33,7 @@ public class NoteFragment extends Fragment {
     Note note = new Note();
     EditText titleNote;
     EditText noteDescription;
-    TextInputEditText noteData;
+    TextView noteData;
     Spinner spinner;
     AppCompatImageView dataButton;
     MaterialButton saveButton;
