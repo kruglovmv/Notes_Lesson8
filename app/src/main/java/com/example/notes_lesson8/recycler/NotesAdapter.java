@@ -25,13 +25,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
 
     }
 
-    public interface OnPopUpMenuClickListener {
+    public interface OnNoteClickListener {
         void onPopUpMenuClick(int idItemPopUpMenu, Note note, int positionNoteInList);
+        void onNoteClick(Note note);
     }
 
-    private OnPopUpMenuClickListener listener;
+    private OnNoteClickListener listener;
 
-    public void setOnPopUpMenuClickListener(OnPopUpMenuClickListener listener) {
+    public void setOnPopUpMenuClickListener(OnNoteClickListener listener) {
         this.listener = listener;
     }
 

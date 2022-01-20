@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.notes_lesson8.R;
 import com.example.notes_lesson8.data.Note;
@@ -56,6 +57,10 @@ public class NoteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final FragmentActivity fragmentActivity = getActivity();
+        if (fragmentActivity != null) {
+            fragmentActivity.findViewById(R.id.main_bottom_navigation_view).setVisibility(View.GONE);
+        }
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
     }
 

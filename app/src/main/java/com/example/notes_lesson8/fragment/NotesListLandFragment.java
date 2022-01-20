@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 import static com.example.notes_lesson8.data.Constants.LIST_NOTES_FOR_EDIT;
 
-public class NotesListLandFragment extends NotesListFragment implements NotesAdapter.OnPopUpMenuClickListener{
+public class NotesListLandFragment extends NotesListFragment implements NotesAdapter.OnNoteClickListener{
     Repo noteslist;
     RecyclerView list;
     NotesAdapter adapter;
@@ -41,11 +41,17 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
                 return;
             }
             case R.id.popup_menu_for_note_in_list_edit:{
-                controller.listPress(note);
+                controller.listPressLand(note);
                 return;
             }
         }
     }
+
+    @Override
+    public void onNoteClick(Note note) {
+        controller.listPressLand(note);
+    }
+
     public static NotesListLandFragment getInstance(Repo noteslist){
         NotesListLandFragment fragment = new NotesListLandFragment();
         Bundle args = new Bundle();
@@ -53,12 +59,17 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
         fragment.setArguments(args);
         return fragment;
     }
-    private Controller controller;
+    interface ControllerLandFragment {
+        void listPressLand(Note note);
+    }
+    private ControllerLandFragment controller;
 
     @Override
     public void onAttach(@NonNull Context context) {
-        if(context instanceof Controller){
-            this.controller = (Controller)context;
+        if(context instanceof ControllerLandFragment){
+            this.controller = (ControllerLandFragment)context;
+        }else{
+            throw new IllegalStateException("Activity doesn't implements controller");
         }
         super.onAttach(context);
     }

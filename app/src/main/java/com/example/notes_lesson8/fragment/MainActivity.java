@@ -20,9 +20,9 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.function.ToDoubleBiFunction;
 
-public class MainActivity extends AppCompatActivity implements NotesListFragment.Controller {
+public class MainActivity extends AppCompatActivity implements NotesListFragment.ControllerPortretFragment, NotesListLandFragment.ControllerLandFragment {
     Repo noteslist = NoteList.getInstance();
-    BottomNavigationView navigationMenu;
+    NavigationBarView navigationMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +35,11 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.main_list_fragment_holder, NotesListFragment.getInstance(noteslist))
-                        .addToBackStack(null)
                         .commit();
             } else {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.main_list_fragment_holder, NotesListFragment.getInstance(noteslist))
-                        .addToBackStack(null)
                         .commit();
             }
         } else {
@@ -49,13 +47,11 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist))
-                        .addToBackStack(null)
                         .commit();
             } else {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist))
-                        .addToBackStack(null)
                         .commit();
             }
         }
@@ -63,21 +59,20 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
 
     private void initBottomNavigation() {
         navigationMenu = findViewById(R.id.main_bottom_navigation_view);
-        navigationMenu.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_exit: {
-                        finish();
-                    }
-                    case R.id.menu_search: {
-                        //TODO
-                        return true;
-                    }
-
+        navigationMenu
+                .setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_exit: {
+                    finish();
+                    return true;
                 }
-                return false;
+                case R.id.menu_search: {
+                    //TODO
+                    return true;
+                }
+                default:return false;
             }
+
         });
     }
 
@@ -136,11 +131,27 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(new Note()))
-                    .addToBackStack(null)
                     .commit();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void listPressLand(Note note) {
+        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(note))
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.chaild_fragment_holder, NoteFragment.getInstance(note))
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
 }
+
 

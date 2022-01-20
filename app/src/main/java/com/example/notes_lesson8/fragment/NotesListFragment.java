@@ -31,7 +31,7 @@ import java.io.Serializable;
 
 import static com.example.notes_lesson8.data.Constants.LIST_NOTES_FOR_EDIT;
 
-public class NotesListFragment extends Fragment implements NotesAdapter.OnPopUpMenuClickListener {
+public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteClickListener {
     Repo noteslist;
     RecyclerView list;
     NotesAdapter adapter;
@@ -52,10 +52,15 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnPopUpM
         }
     }
 
-    interface Controller {
+    @Override
+    public void onNoteClick(Note note) {
+        controller.listPress(note);
+    }
+
+    interface ControllerPortretFragment {
         void listPress(Note note);
     }
-    private Controller controller;
+    private ControllerPortretFragment controller;
 
     public static NotesListFragment getInstance(Repo noteslist){
         NotesListFragment fragment = new NotesListFragment();
@@ -68,8 +73,8 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnPopUpM
 
     @Override
     public void onAttach(@NonNull Context context) {
-        if(context instanceof Controller){
-            this.controller = (Controller)context;
+        if(context instanceof ControllerPortretFragment){
+            this.controller = (ControllerPortretFragment)context;
         }
         super.onAttach(context);
     }

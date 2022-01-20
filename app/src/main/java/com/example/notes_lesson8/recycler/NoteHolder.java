@@ -21,20 +21,20 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     AppCompatImageView  buttonForPopUpMenu;
     androidx.appcompat.widget.PopupMenu popUpMenu;
     Note note;
-    private NotesAdapter.OnPopUpMenuClickListener listener;
+    private NotesAdapter.OnNoteClickListener listener;
 
-    public NoteHolder(@NonNull View itemView, NotesAdapter.OnPopUpMenuClickListener listener) {
+    public NoteHolder(@NonNull View itemView, NotesAdapter.OnNoteClickListener listener) {
         super(itemView);
         this.listener = listener;
         buttonForPopUpMenu = itemView.findViewById(R.id.activity_note_in_list_button_for_popup_menu);
         titleNoteInList = itemView.findViewById(R.id.activity_note_in_list_title_note_in_list);
         descriptionNoteInList = itemView.findViewById(R.id.activity_note_in_list_description_note_in_list);
-//        itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                listener.onNoteClick(note);
-//            }
-//        });
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onNoteClick(note);
+            }
+        });
         popUpMenu = new PopupMenu(itemView.getContext(),buttonForPopUpMenu);
         popUpMenu.inflate(R.menu.popup_menu_for_note_in_list);
         buttonForPopUpMenu.setOnClickListener(new View.OnClickListener() {
