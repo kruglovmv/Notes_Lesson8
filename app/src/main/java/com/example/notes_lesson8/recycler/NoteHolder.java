@@ -18,7 +18,7 @@ import com.example.notes_lesson8.data.Note;
 public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
     TextView titleNoteInList;
     TextView descriptionNoteInList;
-    AppCompatImageView  buttonForPopUpMenu;
+    AppCompatImageView buttonForPopUpMenu;
     androidx.appcompat.widget.PopupMenu popUpMenu;
     Note note;
     private NotesAdapter.OnNoteClickListener listener;
@@ -35,7 +35,7 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
                 listener.onNoteClick(note);
             }
         });
-        popUpMenu = new PopupMenu(itemView.getContext(),buttonForPopUpMenu);
+        popUpMenu = new PopupMenu(itemView.getContext(), buttonForPopUpMenu);
         popUpMenu.inflate(R.menu.popup_menu_for_note_in_list);
         buttonForPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,19 +59,21 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.popup_menu_for_note_in_list_delete:{
+        switch (item.getItemId()) {
+            case R.id.popup_menu_for_note_in_list_delete: {
                 listener.onPopUpMenuClick(R.id.popup_menu_for_note_in_list_delete, note, getAdapterPosition());
                 return true;
             }
-            case R.id.popup_menu_for_note_in_list_edit:{
+            case R.id.popup_menu_for_note_in_list_edit: {
                 listener.onPopUpMenuClick(R.id.popup_menu_for_note_in_list_edit, note, getAdapterPosition());
                 return true;
             }
-            default: return false;
+            default:
+                return false;
         }
     }
-    public Note getNote(){
+
+    public Note getNote() {
         return note;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.notes_lesson8.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -52,6 +53,21 @@ public class NoteFragment extends Fragment {
         args.putSerializable(NOTE_FOR_EDIT, note);
         fragment.setArguments(args);
         return fragment;
+    }
+    interface ControllerNoteFragment {
+        void saveButtonPress(Note note);
+        void backButtonPress();
+    }
+    private ControllerNoteFragment controller;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        if(context instanceof ControllerNoteFragment){
+            this.controller = (ControllerNoteFragment)context;
+        }else{
+            throw new IllegalStateException("Activity doesn't implements controller for note's fragment");
+        }
+        super.onAttach(context);
     }
 
     @Nullable
@@ -197,8 +213,7 @@ public class NoteFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent backIntent = new Intent(getContext(), MainActivity.class);
-                startActivity(backIntent);
+                controller.backButtonPress();
             }
         });
 
@@ -207,9 +222,7 @@ public class NoteFragment extends Fragment {
             public void onClick(View view) {
                 int position = adapterForSpinner.getPosition(spinner.getSelectedItem());
                 Note editNote = new Note(titleNote.getText().toString(), noteDescription.getText().toString(), id, position, noteData.getText().toString());
-                Intent backIntent = new Intent(getContext(), MainActivity.class);
-                backIntent.putExtra(NOTE_FOR_EDIT, editNote);
-                startActivity(backIntent);
+                controller.saveButtonPress(editNote);
             }
         });
 

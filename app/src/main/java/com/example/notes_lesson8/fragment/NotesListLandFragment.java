@@ -69,7 +69,7 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
         if(context instanceof ControllerLandFragment){
             this.controller = (ControllerLandFragment)context;
         }else{
-            throw new IllegalStateException("Activity doesn't implements controller");
+            throw new IllegalStateException("Activity doesn't implements controller or list's land fragment");
         }
         super.onAttach(context);
     }

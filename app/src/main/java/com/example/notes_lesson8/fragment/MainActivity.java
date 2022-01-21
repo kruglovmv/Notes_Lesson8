@@ -9,6 +9,8 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.notes_lesson8.R;
 import com.example.notes_lesson8.data.Constants;
@@ -20,101 +22,99 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.function.ToDoubleBiFunction;
 
-public class MainActivity extends AppCompatActivity implements NotesListFragment.ControllerPortretFragment, NotesListLandFragment.ControllerLandFragment {
+public class MainActivity extends AppCompatActivity implements NotesListFragment.ControllerPortretFragment, NotesListLandFragment.ControllerLandFragment, NoteFragment.ControllerNoteFragment {
     Repo noteslist = NoteList.getInstance();
     NavigationBarView navigationMenu;
+    FragmentManager fragmentManager;
+    private NotesListFragment notesListFragment;
+    private NotesListLandFragment notesListLandFragment;
+    private NoteFragment noteFragment;
+    public static final String LIST_FRAGMENT_PORTRAIT = "LIST_FRAGMENT_PORTRAIT";
+    public static final String LIST_FRAGMENT_LAND = "LIST_FRAGMENT_LAND";
+    public static final String NOTE_FRAGMENT = "NOTE_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentManager = getSupportFragmentManager();
         initBottomNavigation();
-        fillList();
-        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-            if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.main_list_fragment_holder, NotesListFragment.getInstance(noteslist))
-                        .commit();
-            } else {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_list_fragment_holder, NotesListFragment.getInstance(noteslist))
-                        .commit();
-            }
+        if ((getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)) {
+
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_list_fragment_holder, NotesListFragment.getInstance(noteslist), LIST_FRAGMENT_PORTRAIT)
+                    .commit();
         } else {
-            if (savedInstanceState != null) {
-                getSupportFragmentManager()
+
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist), LIST_FRAGMENT_LAND)
+                    .commit();
+
+        }
+
+        notesListFragment = (NotesListFragment) fragmentManager.findFragmentByTag(LIST_FRAGMENT_PORTRAIT);
+        notesListLandFragment = (NotesListLandFragment) fragmentManager.findFragmentByTag(LIST_FRAGMENT_LAND);
+        noteFragment = (NoteFragment) fragmentManager.findFragmentByTag(NOTE_FRAGMENT);
+
+        if(noteFragment!=null){
+            fragmentManager
+                    .popBackStack(NOTE_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.executePendingTransactions();
+
+            if ((getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)) {
+                fragmentManager
                         .beginTransaction()
-                        .replace(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist))
+                        .replace(R.id.main_list_fragment_holder, noteFragment, NOTE_FRAGMENT)
+                        .addToBackStack(NOTE_FRAGMENT)
                         .commit();
-            } else {
-                getSupportFragmentManager()
+            }else {
+                fragmentManager
                         .beginTransaction()
-                        .add(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist))
+                        .replace(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist), LIST_FRAGMENT_LAND)
+                        .commit();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.chaild_fragment_holder, noteFragment, NOTE_FRAGMENT)
+                        .addToBackStack(NOTE_FRAGMENT)
                         .commit();
             }
         }
+
     }
 
     private void initBottomNavigation() {
         navigationMenu = findViewById(R.id.main_bottom_navigation_view);
         navigationMenu
                 .setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_exit: {
-                    finish();
-                    return true;
-                }
-                case R.id.menu_search: {
-                    //TODO
-                    return true;
-                }
-                default:return false;
-            }
+                    switch (item.getItemId()) {
+                        case R.id.menu_exit: {
+                            finish();
+                            return true;
+                        }
+                        case R.id.menu_search: {
+                            //TODO
+                            return true;
+                        }
+                        default:
+                            return false;
+                    }
 
-        });
+                });
     }
 
 
     @Override
     public void listPress(Note note) {
-        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(note))
-                    .addToBackStack(null)
-                    .commit();
-        } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.chaild_fragment_holder, NoteFragment.getInstance(note))
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
+        if (noteFragment == null)
+            noteFragment = new NoteFragment();
 
-    private void fillList() {
-        Intent intent = getIntent();
-        if ((intent != null) && (noteslist.getSizeRepo() != 0)) {
-            Note note = (Note) intent.getSerializableExtra(Constants.NOTE_FOR_EDIT);
-            if (note != null) {
-                if (note.getId() == -1) {
-                    noteslist.create(note);
-                } else {
-                    noteslist.update(note);
-                }
-            }
-        } else {
-
-            noteslist.create(new Note("Понедельник", ""));
-            noteslist.create(new Note("Вторник", ""));
-            noteslist.create(new Note("Среда", ""));
-            noteslist.create(new Note("Четверг", ""));
-            noteslist.create(new Note("Пятница", ""));
-            noteslist.create(new Note("Суббота", ""));
-            noteslist.create(new Note("Воскресенье", ""));
-        }
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(note), NOTE_FRAGMENT)
+                .addToBackStack(NOTE_FRAGMENT)
+                .commit();
     }
 
     @Override
@@ -128,30 +128,62 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (item.getItemId() == R.id.menu_add) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(new Note()))
-                    .commit();
+            if ((getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)) {
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(new Note()), NOTE_FRAGMENT)
+                        .addToBackStack(NOTE_FRAGMENT)
+                        .commit();
+            } else {
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.chaild_fragment_holder, NoteFragment.getInstance(new Note()), NOTE_FRAGMENT)
+                        .addToBackStack(NOTE_FRAGMENT)
+                        .commit();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void listPressLand(Note note) {
-        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-            getSupportFragmentManager()
+        if (noteFragment == null)
+            noteFragment = new NoteFragment();
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chaild_fragment_holder, NoteFragment.getInstance(note), NOTE_FRAGMENT)
+                .addToBackStack(NOTE_FRAGMENT)
+                .commit();
+    }
+
+    @Override
+    public void saveButtonPress(Note note) {
+        if (note != null) {
+            if (note.getId() == -1) {
+                noteslist.create(note);
+            } else {
+                noteslist.update(note);
+            }
+        }
+        fragmentManager
+                .popBackStack(NOTE_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.executePendingTransactions();
+        if ((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+            fragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_list_fragment_holder, NoteFragment.getInstance(note))
-                    .addToBackStack(null)
-                    .commit();
-        } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.chaild_fragment_holder, NoteFragment.getInstance(note))
-                    .addToBackStack(null)
+                    .replace(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist), LIST_FRAGMENT_LAND)
                     .commit();
         }
     }
+
+    @Override
+    public void backButtonPress() {
+        fragmentManager
+                .popBackStack(NOTE_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.executePendingTransactions();
+    }
 }
+
 
 

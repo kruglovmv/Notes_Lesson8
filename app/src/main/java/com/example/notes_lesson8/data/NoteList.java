@@ -18,7 +18,13 @@ public class NoteList implements Repo, Serializable {
     }
 
     private NoteList() {
-
+        create(new Note("Понедельник", ""));
+        create(new Note("Вторник", ""));
+        create(new Note("Среда", ""));
+        create(new Note("Четверг", ""));
+        create(new Note("Пятница", ""));
+        create(new Note("Суббота", ""));
+        create(new Note("Воскресенье", ""));
     }
 
     @Override
@@ -67,3 +73,4 @@ public class NoteList implements Repo, Serializable {
         return notesList.size();
     }
 }
+

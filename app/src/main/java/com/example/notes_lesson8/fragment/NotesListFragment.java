@@ -75,7 +75,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
     public void onAttach(@NonNull Context context) {
         if(context instanceof ControllerPortretFragment){
             this.controller = (ControllerPortretFragment)context;
-        }
+        }else{
+        throw new IllegalStateException("Activity doesn't implements controller or list's fragment");
+    }
         super.onAttach(context);
     }
 
