@@ -41,7 +41,7 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
                 return;
             }
             case R.id.popup_menu_for_note_in_list_edit:{
-                controller.listPressLand(note);
+                ((ControllerFragment)getContext()).listPressLand(note);
                 return;
             }
         }
@@ -49,7 +49,7 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
 
     @Override
     public void onNoteClick(Note note) {
-        controller.listPressLand(note);
+        ((ControllerFragment)getContext()).listPressLand(note);
     }
 
     public static NotesListLandFragment getInstance(Repo noteslist){
@@ -58,20 +58,6 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
         args.putSerializable(LIST_NOTES_FOR_EDIT, (Serializable) noteslist);
         fragment.setArguments(args);
         return fragment;
-    }
-    interface ControllerLandFragment {
-        void listPressLand(Note note);
-    }
-    private ControllerLandFragment controller;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        if(context instanceof ControllerLandFragment){
-            this.controller = (ControllerLandFragment)context;
-        }else{
-            throw new IllegalStateException("Activity doesn't implements controller or list's land fragment");
-        }
-        super.onAttach(context);
     }
 
     @Nullable

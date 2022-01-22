@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +18,13 @@ import com.example.notes_lesson8.data.Constants;
 import com.example.notes_lesson8.data.Note;
 import com.example.notes_lesson8.data.NoteList;
 import com.example.notes_lesson8.data.Repo;
+import com.example.notes_lesson8.dialog.ExitDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.function.ToDoubleBiFunction;
 
-public class MainActivity extends AppCompatActivity implements NotesListFragment.ControllerPortretFragment, NotesListLandFragment.ControllerLandFragment, NoteFragment.ControllerNoteFragment {
+public class MainActivity extends AppCompatActivity implements ControllerFragment {
     Repo noteslist = NoteList.getInstance();
     NavigationBarView navigationMenu;
     FragmentManager fragmentManager;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
         notesListLandFragment = (NotesListLandFragment) fragmentManager.findFragmentByTag(LIST_FRAGMENT_LAND);
         noteFragment = (NoteFragment) fragmentManager.findFragmentByTag(NOTE_FRAGMENT);
 
-        if(noteFragment!=null){
+        if (noteFragment != null) {
             fragmentManager
                     .popBackStack(NOTE_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.executePendingTransactions();
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
                         .replace(R.id.main_list_fragment_holder, noteFragment, NOTE_FRAGMENT)
                         .addToBackStack(NOTE_FRAGMENT)
                         .commit();
-            }else {
+            } else {
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.main_list_fragment_holder, NotesListLandFragment.getInstance(noteslist), LIST_FRAGMENT_LAND)
@@ -90,7 +92,8 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
                 .setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.menu_exit: {
-                            finish();
+                            new ExitDialogFragment().show(fragmentManager, null);
+
                             return true;
                         }
                         case R.id.menu_search: {
@@ -183,7 +186,17 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
                 .popBackStack(NOTE_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentManager.executePendingTransactions();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() == 0) {
+            new ExitDialogFragment().show(fragmentManager, null);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
+
 
 
 

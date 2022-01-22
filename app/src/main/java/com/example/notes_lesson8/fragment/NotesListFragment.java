@@ -46,7 +46,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
                 return;
             }
             case R.id.popup_menu_for_note_in_list_edit:{
-                controller.listPress(note);
+                ((ControllerFragment)getContext()).listPress(note);
                 return;
             }
         }
@@ -54,13 +54,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
 
     @Override
     public void onNoteClick(Note note) {
-        controller.listPress(note);
+        ((ControllerFragment)getContext()).listPress(note);
     }
 
-    interface ControllerPortretFragment {
-        void listPress(Note note);
-    }
-    private ControllerPortretFragment controller;
 
     public static NotesListFragment getInstance(Repo noteslist){
         NotesListFragment fragment = new NotesListFragment();
@@ -68,17 +64,6 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
         args.putSerializable(LIST_NOTES_FOR_EDIT, (Serializable) noteslist);
         fragment.setArguments(args);
         return fragment;
-    }
-
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        if(context instanceof ControllerPortretFragment){
-            this.controller = (ControllerPortretFragment)context;
-        }else{
-        throw new IllegalStateException("Activity doesn't implements controller or list's fragment");
-    }
-        super.onAttach(context);
     }
 
     @Nullable
