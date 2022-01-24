@@ -54,21 +54,6 @@ public class NoteFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    interface ControllerNoteFragment {
-        void saveButtonPress(Note note);
-        void backButtonPress();
-    }
-    private ControllerNoteFragment controller;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        if(context instanceof ControllerNoteFragment){
-            this.controller = (ControllerNoteFragment)context;
-        }else{
-            throw new IllegalStateException("Activity doesn't implements controller for note's fragment");
-        }
-        super.onAttach(context);
-    }
 
     @Nullable
     @Override
@@ -213,7 +198,7 @@ public class NoteFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.backButtonPress();
+                ((ControllerFragment) getContext()).backButtonPress();
             }
         });
 
@@ -222,7 +207,7 @@ public class NoteFragment extends Fragment {
             public void onClick(View view) {
                 int position = adapterForSpinner.getPosition(spinner.getSelectedItem());
                 Note editNote = new Note(titleNote.getText().toString(), noteDescription.getText().toString(), id, position, noteData.getText().toString());
-                controller.saveButtonPress(editNote);
+                ((ControllerFragment) getContext()).saveButtonPress(editNote);
             }
         });
 
