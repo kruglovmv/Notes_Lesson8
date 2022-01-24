@@ -8,4 +8,5 @@
     <dimen name="button_margin">10dp</dimen>
     <dimen name="text_size_title_in_list">20sp</dimen>
     <dimen name="text_size_note_in_list">30sp</dimen>
+    <dimen name="spinner_min_height">48dp</dimen>
 </resources>

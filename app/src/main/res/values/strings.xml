@@ -11,6 +11,8 @@
     <string name="hint_note">NOTE</string>
     <string name="text_popup_menu_for_note_in_list_delete">Delete</string>
     <string name="text_popup_menu_for_note_in_list_edit">Edit</string>
+    <string name="exit_menu_text">EXIT</string>
+    <string name="search_menu_text">Search</string>
     <string-array name="importance">
         <item>High</item>
         <item>Medium</item>

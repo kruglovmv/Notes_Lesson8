@@ -1,5 +1,6 @@
 package com.example.notes_lesson8.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes_lesson8.R;
 import com.example.notes_lesson8.data.Note;
 import com.example.notes_lesson8.data.Repo;
+import com.example.notes_lesson8.recycler.NoteHolder;
 import com.example.notes_lesson8.recycler.NotesAdapter;
 
 import java.io.Serializable;
@@ -28,6 +31,27 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
     RecyclerView list;
     NotesAdapter adapter;
 
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onPopUpMenuClick(int idItemPopUpMenu, Note note, int positionNoteInList) {
+        switch (idItemPopUpMenu){
+            case R.id.popup_menu_for_note_in_list_delete:{
+                noteslist.delete(note.getId());
+                adapter.delete(noteslist.getAll(), positionNoteInList);
+                return;
+            }
+            case R.id.popup_menu_for_note_in_list_edit:{
+                controller.listPressLand(note);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onNoteClick(Note note) {
+        controller.listPressLand(note);
+    }
+
     public static NotesListLandFragment getInstance(Repo noteslist){
         NotesListLandFragment fragment = new NotesListLandFragment();
         Bundle args = new Bundle();
@@ -35,12 +59,17 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
         fragment.setArguments(args);
         return fragment;
     }
-    private Controller controller;
+    interface ControllerLandFragment {
+        void listPressLand(Note note);
+    }
+    private ControllerLandFragment controller;
 
     @Override
     public void onAttach(@NonNull Context context) {
-        if(context instanceof Controller){
-            this.controller = (Controller)context;
+        if(context instanceof ControllerLandFragment){
+            this.controller = (ControllerLandFragment)context;
+        }else{
+            throw new IllegalStateException("Activity doesn't implements controller or list's land fragment");
         }
         super.onAttach(context);
     }
@@ -59,17 +88,35 @@ public class NotesListLandFragment extends NotesListFragment implements NotesAda
             noteslist = (Repo) args.getSerializable(LIST_NOTES_FOR_EDIT);
         }
         adapter.setNotes(noteslist.getAll());
-        adapter.setOnNoteClickListener(this);
+        adapter.setOnPopUpMenuClickListener(this);
         list = view.findViewById(R.id.fragment_notes_list_recycler);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.HORIZONTAL));
         list.setAdapter(adapter);
+        initHelper();
 
     }
-//
-//    @Override
-//    public void onNoteClick(Note note) {
-//        controller.listPress(note);
-//    }
+    private void initHelper() {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int flags = ItemTouchHelper.LEFT;
+                return makeMovementFlags(0, flags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                NoteHolder holder = (NoteHolder) viewHolder;
+                noteslist.delete(holder.getNote().getId());
+                adapter.delete(noteslist.getAll(), viewHolder.getAdapterPosition());
+            }
+        });
+        helper.attachToRecyclerView(list);
+    }
 }
 

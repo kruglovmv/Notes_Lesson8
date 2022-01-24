@@ -1,6 +1,7 @@
 package com.example.notes_lesson8.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.notes_lesson8.R;
 import com.example.notes_lesson8.data.Note;
@@ -32,7 +35,7 @@ public class NoteFragment extends Fragment {
     Note note = new Note();
     EditText titleNote;
     EditText noteDescription;
-    TextInputEditText noteData;
+    TextView noteData;
     Spinner spinner;
     AppCompatImageView dataButton;
     MaterialButton saveButton;
@@ -51,10 +54,29 @@ public class NoteFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    interface ControllerNoteFragment {
+        void saveButtonPress(Note note);
+        void backButtonPress();
+    }
+    private ControllerNoteFragment controller;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        if(context instanceof ControllerNoteFragment){
+            this.controller = (ControllerNoteFragment)context;
+        }else{
+            throw new IllegalStateException("Activity doesn't implements controller for note's fragment");
+        }
+        super.onAttach(context);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final FragmentActivity fragmentActivity = getActivity();
+        if (fragmentActivity != null) {
+            fragmentActivity.findViewById(R.id.main_bottom_navigation_view).setVisibility(View.GONE);
+        }
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
     }
 
@@ -191,8 +213,7 @@ public class NoteFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent backIntent = new Intent(getContext(), MainActivity.class);
-                startActivity(backIntent);
+                controller.backButtonPress();
             }
         });
 
@@ -201,9 +222,7 @@ public class NoteFragment extends Fragment {
             public void onClick(View view) {
                 int position = adapterForSpinner.getPosition(spinner.getSelectedItem());
                 Note editNote = new Note(titleNote.getText().toString(), noteDescription.getText().toString(), id, position, noteData.getText().toString());
-                Intent backIntent = new Intent(getContext(), MainActivity.class);
-                backIntent.putExtra(NOTE_FOR_EDIT, editNote);
-                startActivity(backIntent);
+                controller.saveButtonPress(editNote);
             }
         });
 

@@ -18,7 +18,7 @@ import com.example.notes_lesson8.data.Note;
 public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
     TextView titleNoteInList;
     TextView descriptionNoteInList;
-    AppCompatImageView  buttonForPopUpMenu;
+    AppCompatImageView buttonForPopUpMenu;
     androidx.appcompat.widget.PopupMenu popUpMenu;
     Note note;
     private NotesAdapter.OnNoteClickListener listener;
@@ -29,13 +29,13 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
         buttonForPopUpMenu = itemView.findViewById(R.id.activity_note_in_list_button_for_popup_menu);
         titleNoteInList = itemView.findViewById(R.id.activity_note_in_list_title_note_in_list);
         descriptionNoteInList = itemView.findViewById(R.id.activity_note_in_list_description_note_in_list);
-//        itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                listener.onNoteClick(note);
-//            }
-//        });
-        popUpMenu = new PopupMenu(itemView.getContext(),buttonForPopUpMenu);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onNoteClick(note);
+            }
+        });
+        popUpMenu = new PopupMenu(itemView.getContext(), buttonForPopUpMenu);
         popUpMenu.inflate(R.menu.popup_menu_for_note_in_list);
         buttonForPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,16 +59,21 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.popup_menu_for_note_in_list_delete:{
-                listener.onNoteClick(R.id.popup_menu_for_note_in_list_delete, note, getAdapterPosition());
+        switch (item.getItemId()) {
+            case R.id.popup_menu_for_note_in_list_delete: {
+                listener.onPopUpMenuClick(R.id.popup_menu_for_note_in_list_delete, note, getAdapterPosition());
                 return true;
             }
-            case R.id.popup_menu_for_note_in_list_edit:{
-                listener.onNoteClick(R.id.popup_menu_for_note_in_list_edit, note, getAdapterPosition());
+            case R.id.popup_menu_for_note_in_list_edit: {
+                listener.onPopUpMenuClick(R.id.popup_menu_for_note_in_list_edit, note, getAdapterPosition());
                 return true;
             }
-            default: return false;
+            default:
+                return false;
         }
+    }
+
+    public Note getNote() {
+        return note;
     }
 }
