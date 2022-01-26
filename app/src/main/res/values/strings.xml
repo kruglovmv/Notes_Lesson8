@@ -16,6 +16,12 @@
     <string name="exit_dialog_message">Do you want to close app?</string>
     <string name="text_button_no">No</string>
     <string name="text_button_yes">Yes</string>
+    <string name="nav_header_title">Notes APP</string>
+    <string name="nav_header_subtitle">by MK</string>
+    <string name="menu_home">About APP</string>
+    <string name="about_text">ABOUT</string>
+    <string name="navigation_drawer_open">drawer_open</string>
+    <string name="navigation_drawer_close">drawer_close</string>
     <string-array name="importance">
         <item>High</item>
         <item>Medium</item>

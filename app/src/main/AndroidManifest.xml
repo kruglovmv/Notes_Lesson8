@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Notes_Lesson8">
         <activity android:name=".fragment.MainActivity"
+            android:theme="@style/Theme.Notes_Lesson8.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

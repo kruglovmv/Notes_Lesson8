@@ -11,4 +11,5 @@
     <color name="background_edit_note">#03EAFF</color>
     <color name="background_button">#56000000</color>
     <color name="text_color_note">#56000000</color>
+    <color name="gradient_color_center_for_header_nav_menu">#006796</color>
 </resources>

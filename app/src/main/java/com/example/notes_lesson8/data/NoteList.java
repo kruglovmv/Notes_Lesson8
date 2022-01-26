@@ -8,16 +8,16 @@ public class NoteList implements Repo, Serializable {
 
     private ArrayList<Note> notesList = new ArrayList<>();
     private Integer counter = 0;
-    private static NoteList repo;
+    //private static NoteList repo;
 
-    public static Repo getInstance() {
-        if (repo == null) {
-            repo = new NoteList();
-        }
-        return repo;
-    }
+//    public static Repo getInstance() {
+//        if (repo == null) {
+//            repo = new NoteList();
+//        }
+//        return repo;
+//    }
 
-    private NoteList() {
+    public NoteList() {
         create(new Note("Понедельник", ""));
         create(new Note("Вторник", ""));
         create(new Note("Среда", ""));
