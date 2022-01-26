@@ -4,7 +4,9 @@ package com.example.notes_lesson8.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,27 +28,37 @@ import com.example.notes_lesson8.data.NoteList;
 import com.example.notes_lesson8.data.Repo;
 import com.example.notes_lesson8.recycler.NoteHolder;
 import com.example.notes_lesson8.recycler.NotesAdapter;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 
 import static com.example.notes_lesson8.data.Constants.LIST_NOTES_FOR_EDIT;
+import static com.example.notes_lesson8.data.Constants.SHARED_LIST;
 
 public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteClickListener {
     Repo noteslist;
     RecyclerView list;
     NotesAdapter adapter;
+    Gson gson = new Gson();
+    SharedPreferences repository;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onPopUpMenuClick(int idItemPopUpMenu, Note note, int positionNoteInList) {
-        switch (idItemPopUpMenu){
-            case R.id.popup_menu_for_note_in_list_delete:{
+        switch (idItemPopUpMenu) {
+            case R.id.popup_menu_for_note_in_list_delete: {
                 noteslist.delete(note.getId());
+                repository = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String sharedList = gson.toJson(noteslist);
+                repository
+                        .edit()
+                        .putString(SHARED_LIST, sharedList)
+                        .apply();
                 adapter.delete(noteslist.getAll(), positionNoteInList);
                 return;
             }
-            case R.id.popup_menu_for_note_in_list_edit:{
-                ((ControllerFragment)getContext()).listPress(note);
+            case R.id.popup_menu_for_note_in_list_edit: {
+                ((ControllerFragment) getContext()).listPress(note);
                 return;
             }
         }
@@ -54,11 +66,11 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
 
     @Override
     public void onNoteClick(Note note) {
-        ((ControllerFragment)getContext()).listPress(note);
+        ((ControllerFragment) getContext()).listPress(note);
     }
 
 
-    public static NotesListFragment getInstance(Repo noteslist){
+    public static NotesListFragment getInstance(Repo noteslist) {
         NotesListFragment fragment = new NotesListFragment();
         Bundle args = new Bundle();
         args.putSerializable(LIST_NOTES_FOR_EDIT, (Serializable) noteslist);
@@ -76,7 +88,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         adapter = new NotesAdapter();
         Bundle args = getArguments();
-        if(args.containsKey(LIST_NOTES_FOR_EDIT)){
+        if (args.containsKey(LIST_NOTES_FOR_EDIT)) {
             noteslist = (Repo) args.getSerializable(LIST_NOTES_FOR_EDIT);
         }
         adapter.setNotes(noteslist.getAll());
@@ -105,6 +117,12 @@ public class NotesListFragment extends Fragment implements NotesAdapter.OnNoteCl
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 NoteHolder holder = (NoteHolder) viewHolder;
                 noteslist.delete(holder.getNote().getId());
+                String sharedList = gson.toJson(noteslist);
+                repository = PreferenceManager.getDefaultSharedPreferences(getContext());
+                repository
+                        .edit()
+                        .putString(SHARED_LIST, sharedList)
+                        .apply();
                 adapter.delete(noteslist.getAll(), viewHolder.getAdapterPosition());
             }
         });
